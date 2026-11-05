@@ -1,29 +1,52 @@
-# Sokoban
+# Sokoban en C
 
-## Principe du jeu
+> Jeu de réflexion Sokoban écrit en C, jouable dans le terminal ou en fenêtre graphique avec la bibliothèque SDL2, avec des niveaux chargés depuis des fichiers texte.
 
-Sokoban est un jeu de puzzle dans lequel le joueur doit déplacer des caisses sur des cibles en utilisant les touches de direction. Le joueur incarne un déménageur qui doit déplacer des caisses pour les mettre sur des cibles spécifiques. Le but est de résoudre tous les niveaux en utilisant un minimum de mouvements.
+![C](https://img.shields.io/badge/C-A8B9CC?logo=c&logoColor=black)
+![SDL2](https://img.shields.io/badge/SDL2-1E3A8A)
+![Make](https://img.shields.io/badge/Makefile-6D00CC?logo=gnu&logoColor=white)
+
+## Sujet
+
+Projet universitaire (licence informatique). Le joueur incarne un déménageur qui doit pousser toutes les caisses sur les emplacements cibles. Une caisse ne peut être que poussée, jamais tirée, et on ne peut pas en pousser deux à la fois.
+
+## Fonctionnalités
+
+- **Chargement des niveaux** depuis un fichier texte (`level1.txt` : dimensions, nombre de cibles, puis la grille)
+- **Deux modes d'affichage** : terminal (caractères ASCII) ou fenêtre graphique SDL2
+- Déplacement du joueur, poussée des caisses, collisions avec les murs et les autres caisses
+- Détection de la victoire quand toutes les cibles sont couvertes
+
+| Symbole | Signification |
+| --- | --- |
+| `#` | Mur |
+| `@` | Joueur |
+| `$` | Caisse |
+| `.` | Cible |
 
 ## Compétences acquises
 
-J'ai réalisé le jeu Sokoban en langage C, un jeu de réflexion où le joueur doit pousser des caisses vers des emplacements spécifiques sur un plateau de jeu. Mon implémentation a couvert les fonctionnalités suivantes :
+- **Langage C** : structures, allocation et libération de la mémoire, lecture de fichiers
+- **Pointeurs de fonction** pour choisir l'affichage (terminal ou SDL2) et la gestion des entrées sans dupliquer la boucle de jeu
+- **Programmation modulaire** : séparation grille / joueur / affichage en fichiers `.c` / `.h`
+- **Bibliothèque graphique SDL2** : fenêtre, rendu, gestion des événements clavier
+- **Compilation** avec un Makefile (règles par module, compilation de SDL2 depuis les sources)
+- **Documentation** du code générée avec Doxygen
 
-- Affichage du plateau de jeu en utilisant des caractères ASCII pour représenter les murs, les caisses, le personnage et les emplacements vides.
-- Déplacement du personnage sur le plateau de jeu en utilisant les touches directionnelles du clavier.
-- Vérification des mouvements valides du personnage et des caisses, en prenant en compte les murs et les obstacles.
-- Gestion des interactions entre le personnage, les caisses et les emplacements vides pour déterminer si le joueur a gagné la partie.
-- Possibilité de charger des niveaux à partir de fichiers texte pour jouer à des configurations de plateau différentes.
+## Compiler et jouer
 
-J'ai veillé à écrire un code propre et bien commenté, en suivant les conventions d'écriture du langage C pour assurer la lisibilité du code. Des tests approfondis ont été effectués pour garantir la validité du jeu dans différentes situations.
+Prérequis : gcc et make (Linux).
 
-Ce projet a renforcé mes compétences en programmation en langage C, notamment dans la manipulation des tableaux, la gestion des entrées utilisateur et la logique du jeu. Il m'a également apporté une meilleure compréhension des algorithmes de déplacement et des mécanismes de jeu.
+```bash
+make sdl2        # compile la SDL2 fournie dans le dossier SDL2/ (une seule fois)
+make             # compile le jeu
+```
 
-## Compilation
+```bash
+./sokoban 1          # mode terminal, charge level1.txt
+./sokoban --sdl2 1   # mode graphique
+```
 
-Pour compiler le projet en mode console, utilisez la commande `make` puis `./sokoban <numéro du niveau> (level<numéro du niveau>.txt)`.
-Pour compiler le projet en mode graphique, utilisez la commande `make` puis `./sokoban --sdl2 <numéro du niveau> (level<numéro du niveau>.txt)`.
+En mode terminal : `h` gauche, `j` bas, `k` haut, `l` droite, `q` pour quitter (valider avec Entrée).
 
-## Version de gcc
-
-gcc version 9.3.0
-
+Autres règles du Makefile : `make doc` (documentation Doxygen), `make clean`.
