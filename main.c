@@ -11,15 +11,14 @@ bool run;
 int main(int argc, char **argv)
 {
 	char graphic[30] = "";
-	char file_grid[6] = "level";
+	char file_grid[64];
 	bool sdl2_graphic = false;
 	if (argc == 3)
 	{
 		if (strcmp(argv[1], "--sdl2") == 0)
 		{
 			strcat(graphic, argv[1]);
-			strcat(file_grid, argv[2]);
-			strcat(file_grid, ".txt");
+			snprintf(file_grid, sizeof(file_grid), "level%s.txt", argv[2]);
 			sdl2_graphic = true;
 			sdl_init();
 			handle_display = &display_sdl2;
@@ -37,8 +36,7 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-		strcat(file_grid, argv[1]);
-		strcat(file_grid, ".txt");
+		snprintf(file_grid, sizeof(file_grid), "level%s.txt", argv[1]);
 		handle_display = &display;
 	}
 	struct Grid *g = (struct Grid *)malloc(sizeof(struct Grid));
@@ -59,7 +57,12 @@ int main(int argc, char **argv)
 	}
 	if (g->game_goal == g->game_goal_covered)
 		printf("Bravo !!!\n");
+#ifdef __EMSCRIPTEN__
+	// la page reste ouverte : dessiner le coup gagnant au lieu de fermer la SDL
+	(*handle_display)(g);
+#else
 	if (sdl2_graphic)
 		sdl_quit();
+#endif
 	free_struct_and_player(g);
 }

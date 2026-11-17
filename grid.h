@@ -56,7 +56,7 @@ void display(struct Grid *g);
  * @brief Cette fonction permet de basculer entre la fonction display et la fonction display_sdl2
  * @param[in] pf Adresse de la fonction display ou display_sdl2
  */
-void (*handle_display)(struct Grid *);
+extern void (*handle_display)(struct Grid *);
 
 /**
  * @brief Cette fonction permet de libérer la mémoire du tableau, la structure player ainsi que la structure grid

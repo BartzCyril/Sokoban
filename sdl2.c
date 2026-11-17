@@ -1,6 +1,8 @@
 #include "sdl2.h"
 #include "math.h"
 
+SDLContext context;
+
 void sdl_init()
 {
   int const width = 1000;
@@ -196,21 +198,25 @@ enum Event event_sdl2()
   case SDL_KEYUP:
     switch (event.key.keysym.sym)
     {
+    case SDLK_LEFT:
     case SDLK_h:
     {
       return LEFT;
       break;
     }
+    case SDLK_DOWN:
     case SDLK_j:
     {
       return DOWN;
       break;
     }
+    case SDLK_UP:
     case SDLK_k:
     {
       return UP;
       break;
     }
+    case SDLK_RIGHT:
     case SDLK_l:
     {
       return RIGHT;

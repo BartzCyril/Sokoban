@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+void (*handle_display)(struct Grid *);
+
 void init_level(const char *file_path, struct Grid *g)
 {
 	// ouverture du fichier en mode lecture

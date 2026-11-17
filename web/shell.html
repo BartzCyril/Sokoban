@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sokoban en C</title>
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      margin: 0; min-height: 100vh; padding: 24px 16px; box-sizing: border-box;
+      display: flex; flex-direction: column; align-items: center; gap: 16px;
+      background: #121418; color: #e6e6e6; font: 16px/1.5 system-ui, sans-serif;
+    }
+    h1 { margin: 0; font-size: 1.8rem; }
+    /* SDL fixe une taille CSS inline sur écran haute densité : !important garde le canvas responsive */
+    canvas {
+      width: 100% !important; max-width: 1000px; height: auto !important; aspect-ratio: 2 / 1;
+      border-radius: 8px; background: #000; outline: none;
+    }
+    #message { min-height: 1.5em; margin: 0; font-size: 1.4rem; font-weight: 600; color: #ffd700; }
+    .keys { margin: 0; color: #a0a4ab; text-align: center; }
+    .levels { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .levels a, button {
+      padding: 6px 14px; border: 1px solid #444a55; border-radius: 6px;
+      background: #1d2026; color: #e6e6e6; font: inherit; text-decoration: none; cursor: pointer;
+    }
+    .levels a:hover, button:hover { border-color: #ffd700; }
+    .levels a[aria-current] { background: #ffd700; border-color: #ffd700; color: #121418; font-weight: 600; }
+    a:focus-visible, button:focus-visible { outline: 2px solid #ffd700; outline-offset: 2px; }
+    kbd {
+      display: inline-block; min-width: 1.4em; padding: 0 .35em; border: 1px solid #444a55;
+      border-radius: 4px; background: #1d2026; color: #e6e6e6; font-family: ui-monospace, monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sokoban</h1>
+  <p class="keys">
+    <kbd>←</kbd> <kbd>↓</kbd> <kbd>↑</kbd> <kbd>→</kbd> ou <kbd>h</kbd> <kbd>j</kbd> <kbd>k</kbd> <kbd>l</kbd> pour se déplacer · <kbd>q</kbd> abandonner<br>
+    Poussez les caisses (marron) sur les cibles (or).
+  </p>
+  <nav class="levels" id="levels" aria-label="Choix du niveau"></nav>
+  <canvas id="canvas" width="1000" height="500" tabindex="-1" oncontextmenu="event.preventDefault()"></canvas>
+  <p id="message" role="status">Chargement…</p>
+  <button id="restart" type="button" hidden onclick="location.reload()">Recommencer</button>
+  <script>
+    // shortcut: nombre de niveaux écrit en dur, à mettre à jour quand on ajoute un levelN.txt
+    var LEVEL_COUNT = 6;
+    var level = Number(new URLSearchParams(location.search).get('level'));
+    if (!(Number.isInteger(level) && level >= 1 && level <= LEVEL_COUNT)) level = 1;
+
+    var nav = document.getElementById('levels');
+    for (var i = 1; i <= LEVEL_COUNT; i++) {
+      var link = document.createElement('a');
+      link.href = '?level=' + i;
+      link.textContent = 'Niveau ' + i;
+      if (i === level) link.setAttribute('aria-current', 'page');
+      nav.appendChild(link);
+    }
+
+    var message = document.getElementById('message');
+    var Module = {
+      arguments: ['--sdl2', String(level)],
+      canvas: document.getElementById('canvas'),
+      onRuntimeInitialized: function () { message.textContent = ''; },
+      // fin de partie (victoire ou q) : main() est terminé
+      onExit: function () { document.getElementById('restart').hidden = false; },
+      // la seule sortie standard du jeu en mode SDL2 est le message de victoire
+      print: function (text) { message.textContent = text; },
+      printErr: function (text) { console.error(text); }
+    };
+  </script>
+  {{{ SCRIPT }}}
+</body>
+</html>

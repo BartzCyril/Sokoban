@@ -36,7 +36,7 @@ typedef struct SDLContext {
   int height; ///< hauteur de la fenêtre
 } SDLContext;
 
-SDLContext context;
+extern SDLContext context;
 
 /**
  * @brief Cette fonction permet de créer la fenêtre avec son rendu et d'affecter 

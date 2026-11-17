@@ -1,4 +1,4 @@
-CFLAGS += -Wall -Wextra 
+CFLAGS += -Wall -Wextra -Iinstall_dir/include
 LDFLAGS += -L../install_dir/include/libSDL2 -lm install_dir/lib/libSDL2.so
 CC = gcc
 
@@ -18,8 +18,16 @@ sdl2.o : sdl2.c sdl2.h grid.h
 	$(CC) -g $(CFLAGS) -c sdl2.c 
 
 sdl2 : 
-	cd SDL2 && ./configure --prefix=$$PWD/../install_dir 
+	cd SDL2 && sh ./configure --prefix=$$PWD/../install_dir 
 	cd SDL2 && make install -j6
+
+LEVELS = $(wildcard level*.txt)
+
+web : build/index.html
+
+build/index.html : main.c grid.c player.c sdl2.c grid.h player.h sdl2.h web/shell.html $(LEVELS)
+	mkdir -p build
+	emcc -Wall -Wextra -O2 main.c grid.c player.c sdl2.c -sUSE_SDL=2 -sASYNCIFY -sEXIT_RUNTIME=1 $(foreach f,$(LEVELS),--preload-file $(f)) --shell-file web/shell.html -o build/index.html
 
 archive : 
 	tar -cf BARTZ_Cyril.tar.gz main.c grid.c grid.h player.c player.h sdl2.c sdl2.h Makefile level1.txt README.md Doxyfile
@@ -33,4 +41,5 @@ clean :
 	rm -f *.o sokoban 
 	rm -rf install_dir
 	rm -rf html
+	rm -rf build
 
