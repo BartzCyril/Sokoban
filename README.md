@@ -6,9 +6,9 @@
 ![SDL2](https://img.shields.io/badge/SDL2-1E3A8A)
 ![Make](https://img.shields.io/badge/Makefile-6D00CC?logo=gnu&logoColor=white)
 
-## Jouer en ligne
+**👉 Jouer en ligne : [bartzcyril.github.io/Sokoban](https://bartzcyril.github.io/Sokoban/)**
 
-**[bartzcyril.github.io/Sokoban](https://bartzcyril.github.io/Sokoban/)** : le jeu compilé en WebAssembly avec Emscripten, directement dans le navigateur, avec 6 niveaux au choix et un bouton « Recommencer » en fin de partie. Touches : flèches ou `h` `j` `k` `l` pour se déplacer, `q` pour abandonner.
+Le jeu compilé en WebAssembly avec Emscripten, directement dans le navigateur, avec 6 niveaux au choix et un bouton « Recommencer » en fin de partie. Touches : flèches ou `h` `j` `k` `l` pour se déplacer, `q` pour abandonner.
 
 ## Sujet
 
